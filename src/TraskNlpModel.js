@@ -138,17 +138,31 @@ class TraskNlpModel extends CachedModel {
                 }
             });
 
-            const { intent_candidates = [], entities = [] } = response;
+            // const { intent_candidates = [], entities = [] } = response;
 
-            const intents = intent_candidates
-                .map(({ candidate, probability }) => ({ intent: candidate, score: probability }));
+            // const intents = intent_candidates
+            //     .map(({ candidate, probability }) => ({
+            //         intent: candidate, score: probability
+            //     }));
+
+            const { intent = null } = response;
+
+            const intents = [];
+
+            if (intent && intent !== '__NO_INTENT_FOUND__') {
+                intents.push({
+                    intent,
+                    score: 0.95
+                });
+            }
 
             return {
-                entities: entities.map(({ entity, entityType }) => ({
-                    entity: entityType,
-                    value: entity,
-                    score: 0.95
-                })),
+                // entities: entities.map(({ entity, entityType }) => ({
+                //     entity: entityType,
+                //     value: entity,
+                //     score: 0.95
+                // })),
+                entities: [],
                 intents
             };
 
